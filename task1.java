@@ -36,6 +36,7 @@ public class IsaSim {
 			int rs2 = (instr >> 20) & 0x05f;
 			int funct3 = (instr>> 13) & 0x03f;
 			int funct7 = (instr>> 23) & 0x07f;
+			int imm5 = (instr>> 23) & 0x07f;
 			int imm = (instr >> 20);
 
 			switch (opcode) {
@@ -54,17 +55,91 @@ public class IsaSim {
 				System.out.println("Opcode " + opcode + " not yet implemented");
 				break;
 			}
+			
+			
 			//when opcode=0x13
-			
-			switch()
-			
+			if(opcode==0x13){
+				switch(funct3){
+						
+						
+				}
+			}
 			
 			//when opcode=0x23
+			if(opcode==0x23){
+				switch(funct3){
+				 	case 000:
+						//addi
+						break;
+					case 001://***************
+						//slli
+						break;	
+					case 010:
+						//slti
+						break;
+					case 011:
+						//sltiu
+						break;	
+					case 100:
+						//xori
+						break;	
+					case 101://******************
+						//srliand sral
+						break;
+					case 110:
+						//ori
+						break;	
+					case 111:
+						//andi
+						break;		
+				}
+				
+					
+			}
+			
+			
 			//when opcode=0x63
 			
-			
-			
-			
+			if(opcode== 0x63){
+				switch(funct3){
+					case 000://***************
+						//add and sub
+						if(funct7==0000000){
+							//add
+						}
+						else{
+						//sub
+						}
+						break;
+					case 001:
+						//sll
+						break;	
+					case 010:
+						//slt
+						break;
+					case 011:
+						//sltu
+						break;	
+					case 100:
+						//xor
+						break;	
+					case 101://**************
+						//srl and  sra
+						if(funct7==0000000){
+						//srl
+						}
+						else{
+						//sra
+						}
+						break;
+					case 110:
+						//or
+						break;	
+					case 111:
+						//and
+						break;	
+				}
+			}
 			
 			
 
