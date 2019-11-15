@@ -96,7 +96,19 @@ public class IsaSim {
 				
 					
 			}
+			//opcode is 0x43
 			
+			if(opcode==0x43){
+				switch(funct3){
+				 	case 000:
+						//SB
+						break;
+					case 001://***************
+						//SH	
+						break;	
+					case 010:
+						//SW
+						break;
 			
 			//when opcode=0x63
 			
