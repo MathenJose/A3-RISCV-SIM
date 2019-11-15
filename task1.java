@@ -30,9 +30,12 @@ public class IsaSim {
 		for (;;) {
 
 			int instr = progr[pc];
-			int opcode = instr & 0x7f;
-			int rd = (instr >> 7) & 0x01f;
+			int opcode = instr & 0x7f;//leaves first 7 digits
+			int rd = (instr >> 7) & 0x01f;// 7bit shift to right and clears everything except for first 5 digits
 			int rs1 = (instr >> 15) & 0x01f;
+			int rs2 = (instr >> 20) & 0x05f;
+			int funct3 = (instr>> 13) & 0x03f;
+			int funct7 = (instr>> 23) & 0x07f;
 			int imm = (instr >> 20);
 
 			switch (opcode) {
@@ -51,7 +54,18 @@ public class IsaSim {
 				System.out.println("Opcode " + opcode + " not yet implemented");
 				break;
 			}
+			//when opcode=0x13
+			
 			switch()
+			
+			
+			//when opcode=0x23
+			//when opcode=0x63
+			
+			
+			
+			
+			
 			
 
 			++pc; // We count in 4 byte words
