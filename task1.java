@@ -37,13 +37,22 @@ public class IsaSim {
 
 			switch (opcode) {
 
-			case 0x13:
+			case 0x13: //
 				reg[rd] = reg[rs1] + imm;
 				break;
+			case 0x23: //
+				reg[rd] = reg[rs1] + imm;
+				break;
+			case 0x63:
+				reg[rd] = reg[rs1]+reg[rs2];
+				break;
+				
 			default:
 				System.out.println("Opcode " + opcode + " not yet implemented");
 				break;
 			}
+			switch()
+			
 
 			++pc; // We count in 4 byte words
 			if (pc >= progr.length) {
