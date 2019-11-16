@@ -1,3 +1,6 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * RISC-V Instruction Set Simulator
@@ -26,6 +29,73 @@ public class IsaSim {
 		System.out.println("Hello RISC-V World!");
 
 		pc = 0;
+		
+		 // The name of the file to open.
+        String fileName = "shift.bin";
+
+        try {
+            // Use this for reading the data.
+            byte[] buffer = new byte[1000];
+
+            FileInputStream inputStream = 
+                new FileInputStream(fileName);
+
+            // read fills buffer with data and returns
+            // the number of bytes read (which of course
+            // may be less than the buffer size, but
+            // it will never be more).
+            int total = 0;
+            int nRead = 0;
+            while((nRead = inputStream.read(buffer)) != -1) {
+                total += nRead;
+            }   
+
+            // Always close files.
+            inputStream.close();        
+            
+            System.out.println("Read " + total + " bytes");
+
+            int i = 0;
+            String instruction = "";
+            int instructionInt;
+            
+            while(i < total) {
+	            
+	            String s2 = String.format("%8s", Integer.toBinaryString(buffer[i] & 0xFF)).replace(' ', '0');
+	            //System.out.println(s2);
+	            
+	            instruction = s2 + instruction;
+	            if (i%4 == 3) {
+	            	System.out.println(instruction);
+	            	instructionInt = Integer.parseInt(instruction,2);
+	            	System.out.println(instructionInt);
+	            	instruction = "";
+	            }
+	            
+	            /*
+	            if (i%4 == 3) {
+	            	System.out.println(s2);
+	            }
+	            else {
+	            	System.out.print(s2 + "_");
+	            }
+	            */
+	            
+	            i++;
+            }
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                "Unable to open file '" + 
+                fileName + "'");                
+        }
+        catch(IOException ex) {
+            System.out.println(
+                "Error reading file '" 
+                + fileName + "'");                  
+            // Or we could just do this: 
+            // ex.printStackTrace();
+        }
 
 		for (;;) {
 
