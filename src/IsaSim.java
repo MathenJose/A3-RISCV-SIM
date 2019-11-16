@@ -109,7 +109,8 @@ public class IsaSim {
 					case 010:
 						//SW
 						break;
-			
+				}
+			}
 			//when opcode=0x63
 			
 			if(opcode== 0x63){
