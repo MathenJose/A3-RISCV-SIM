@@ -113,6 +113,18 @@ public class IsaSim {
         }
         
         pc = 0; // resetting pc to zero for simulating (used for loading progr array before)
+		
+		//conversion of signed to unsigned
+		public static long getSigned(int x){
+		if(x>0){
+			return x;
+			}
+			else{
+				x=~x;
+				return x=x+1;
+		
+				}
+		}
 
 		for (;;) {
 
