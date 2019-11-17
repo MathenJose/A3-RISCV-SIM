@@ -5,7 +5,8 @@ import java.io.IOException;
 /**
  * RISC-V Instruction Set Simulator
  * 
- * A tiny first step to get the simulator started. Can execute just a single
+ * A tiny first step to 
+ the simulator started. Can execute just a single
  * RISC-V instruction.
  * 
  * @author Martin Schoeberl (martin@jopdesign.com)
@@ -170,7 +171,7 @@ public class IsaSim {
 						break;
 					case 001://***************
 						//slli-shifr left logical immediate
-						reg[rd]=reg[rs1] <<< imm;
+						reg[rd]=reg[rs1] << imm;
 						break;	
 					case 010:
 						//slti-set less than immediate
@@ -184,6 +185,7 @@ public class IsaSim {
 					case 011:
 						//sltiu-set less than immediate unsigned
 						//*****************
+						getSigned(int imm);
 						if(reg[rs1]>imm){
 						reg[rd] = 1;
 						}
