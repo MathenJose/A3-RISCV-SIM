@@ -148,7 +148,7 @@ public class IsaSim {
 			if(opcode==0x13){
 				switch(funct3){
 						
-						
+					//sehwa	
 				}
 			}
 			
