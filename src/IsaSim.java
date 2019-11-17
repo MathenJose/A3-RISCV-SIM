@@ -157,27 +157,36 @@ public class IsaSim {
 				switch(funct3){
 				 	case 000:
 						//addi
+						reg[rd]=reg[rs1]+imm;
 						break;
 					case 001://***************
 						//slli
 						break;	
 					case 010:
 						//slti
+						if(reg[rs1]>imm){
+						reg[rd]==1;
+						}
+						else{reg[rd]==0;}
 						break;
 					case 011:
 						//sltiu
 						break;	
 					case 100:
 						//xori
+						reg[rd]=reg[rs1]^imm;
 						break;	
 					case 101://******************
-						//srliand sral
+						//srli and sral
 						break;
 					case 110:
 						//ori
+						reg[rd]=reg[rs1]|imm;
+						break;	
 						break;	
 					case 111:
 						//andi
+						reg[rd]=reg[rs1]&imm;
 						break;		
 				}
 				
@@ -215,9 +224,15 @@ public class IsaSim {
 						break;
 					case 001:
 						//sll
+						reg[rd]=reg[rs1]<<<reg[rs2];
 						break;	
 					case 010:
-						//slt
+						//slt-set less than. slt rd, rs1, rs2.
+						//rd is 1 if rs1<rs2
+						if(reg[rs1]<reg[rs2]){
+						reg[rd]==1;
+						}
+						else{reg[rd]==0;}
 						break;
 					case 011:
 						//sltu
@@ -228,11 +243,14 @@ public class IsaSim {
 						break;	
 					case 101://**************
 						//srl and  sra
-						if(funct7==0000000){
+						if(funct7=0000000){
 						//srl
+						reg[rd]=reg[rs1]>>>reg[rs2];
 						}
-						else{
 						//sra
+						if(funct7=0100000){
+						//srl
+						reg[rd]=reg[rs1]>>reg[rs2];
 						}
 						break;
 					case 110:
