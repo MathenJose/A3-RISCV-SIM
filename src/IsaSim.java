@@ -149,16 +149,16 @@ public class IsaSim {
 				switch(funct3){
 				 	case 000:
 						//addi
-						reg[rd]=reg[rs1]+imm;
+						reg[rd]=reg[rs1]+imm5;
 						
 					case 001://***************
 						//slli-shifr left logical immediate
-						imm = getSigned(imm);
-						reg[rd]=reg[rs1] << imm;
+						imm5 = getSigned(imm5);
+						reg[rd]=reg[rs1] << imm5;
 							
 					case 010:
 						//slti-set less than immediate
-						if(reg[rs1]<imm){
+						if(reg[rs1]<imm5){
 						reg[rd] = 1;
 						}
 						else{
@@ -168,8 +168,8 @@ public class IsaSim {
 					case 011:
 						//sltiu-set less than immediate unsigned
 						//*****************
-						imm = getSigned(imm);
-						if(reg[rs1]>imm){
+						imm5 = getSigned(imm5);
+						if(reg[rs1]>imm5){
 						reg[rd] = 1;
 						}
 						else{
@@ -178,26 +178,26 @@ public class IsaSim {
 						break;	
 					case 100:
 						//xori
-						reg[rd]=reg[rs1]^imm;
+						reg[rd]=reg[rs1]^imm5;
 						
 					case 101://******************
 						//srli and sral- shift right logical and arithmetic immediate
 						
 						if(funct7==0000000){
-						imm = getSigned(imm);	
-						reg[rd]=reg[rs1]<<imm;
+						imm5 = getSigned(imm5);	
+						reg[rd]=reg[rs1]<<imm5;
 						}
 						if(funct7==0100000){
-						reg[rd]=reg[rs1]>>imm;
+						reg[rd]=reg[rs1]>>imm5;
 						}
 						
 					case 110:
 						//ori
-						reg[rd]=reg[rs1]|imm;
+						reg[rd]=reg[rs1]|imm5;
 							
 					case 111:
 						//andi
-						reg[rd]=reg[rs1]&imm;
+						reg[rd]=reg[rs1]&imm5;
 							}
 			case 0x33:
 					switch(funct3){
@@ -215,7 +215,7 @@ public class IsaSim {
 					case 001:
 						//sll
 						rs2 = getSigned(rs2);
-						reg[rd]=reg[rs1]<< (32-reg[rs2]); // FIX 
+						reg[rd]=reg[rs1]<<reg[rs2]; // FIX 
 							
 					case 010:
 						//slt-set less than. slt rd, rs1, rs2.
@@ -244,13 +244,14 @@ public class IsaSim {
 						break;	
 					case 101://**************
 						//srl and  sra
+						rs2 = getSigned(rs2);
 						if(funct7 == 0000000){
 						//srl
-						reg[rd]=reg[rs1]>>>reg[rs2];
+						reg[rd]=reg[rs1]<<reg[rs2];
 						}
 						//sra
 						if(funct7 == 0100000){
-						//srl
+						
 						reg[rd]=reg[rs1]>>reg[rs2];
 						}
 						
