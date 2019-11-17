@@ -141,7 +141,11 @@ public class IsaSim {
 			int imml =(instr >> 12);
 
 			switch (opcode) {
-
+			
+			case 0x73:
+				funct3=000;
+				break;	
+				
 			case 0x13: //load and store
 				reg[rd] = reg[rs1] + imml;
 				break;
@@ -215,7 +219,8 @@ public class IsaSim {
 						break;
 					case 001:
 						//sll
-						
+						//shift left logical or unsigned is same as arithmetic. << is used	
+						//no conversion to unsigned number
 						reg[rd]=reg[rs1]<<reg[rs2]; // FIX 
 						break;	
 					case 010:
@@ -243,12 +248,14 @@ public class IsaSim {
 						//xor
 						reg[rd]=reg[rs1]^reg[rs2];
 						break;	
+							
 					case 101://**************
 						//srl and  sra
-						rs2 = getSigned(rs2);
+						//rs2 = getSigned(rs2);
+							//used >>> and >> for shift to right for unsigned and signed
 						if(funct7 == 0000000){
 						//srl
-						reg[rd]=reg[rs1]<<reg[rs2];
+						reg[rd]=reg[rs1]>>>reg[rs2];
 						}
 						//sra
 						if(funct7 == 0100000){
