@@ -158,7 +158,7 @@ public class IsaSim {
 							
 					case 010:
 						//slti-set less than immediate
-						if(reg[rs1]>imm){
+						if(reg[rs1]<imm){
 						reg[rd] = 1;
 						}
 						else{
@@ -185,7 +185,7 @@ public class IsaSim {
 						
 						if(funct7==0000000){
 						imm = getSigned(imm);	
-						reg[rd]=reg[rs1]<<(32-imm);
+						reg[rd]=reg[rs1]<<imm;
 						}
 						if(funct7==0100000){
 						reg[rd]=reg[rs1]>>imm;
