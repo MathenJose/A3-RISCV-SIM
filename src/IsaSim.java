@@ -144,13 +144,128 @@ public class IsaSim {
 
 			case 0x13: //load and store
 				reg[rd] = reg[rs1] + imm;
-				break;
+				
 			case 0x23: //instr with immediates
-				reg[rd] = reg[rs1] + imm;
-				break;
-			case 0x63://arithmetic operations
-				reg[rd] = reg[rs1]+reg[rs2];
-				break;
+				switch(funct3){
+				 	case 000:
+						//addi
+						reg[rd]=reg[rs1]+imm;
+						
+					case 001://***************
+						//slli-shifr left logical immediate
+						imm = getSigned(imm);
+						reg[rd]=reg[rs1] << imm;
+							
+					case 010:
+						//slti-set less than immediate
+						if(reg[rs1]>imm){
+						reg[rd] = 1;
+						}
+						else{
+							reg[rd] = 0;
+						}
+						
+					case 011:
+						//sltiu-set less than immediate unsigned
+						//*****************
+						imm = getSigned(imm);
+						if(reg[rs1]>imm){
+						reg[rd] = 1;
+						}
+						else{
+							reg[rd] = 0;
+						}
+						break;	
+					case 100:
+						//xori
+						reg[rd]=reg[rs1]^imm;
+						
+					case 101://******************
+						//srli and sral- shift right logical and arithmetic immediate
+						
+						if(funct7==0000000){
+						imm = getSigned(imm);	
+						reg[rd]=reg[rs1]<<(32-imm);
+						}
+						if(funct7==0100000){
+						reg[rd]=reg[rs1]>>imm;
+						}
+						
+					case 110:
+						//ori
+						reg[rd]=reg[rs1]|imm;
+							
+					case 111:
+						//andi
+						reg[rd]=reg[rs1]&imm;
+				}
+			
+			case 0x33://arithmetic operations
+					switch(funct3){
+					case 000://***************
+						//add and sub
+						if(funct7==0000000){
+							//add
+							reg[rd]=reg[rs1]+reg[rs2];
+						}
+						if(funct7==0100000){
+						//sub
+							reg[rd]=reg[rs1]-reg[rs2];
+						}
+						
+					case 001:
+						//sll
+						rs2 = getSigned(rs2);
+						reg[rd]=reg[rs1]<< (32-reg[rs2]); // FIX 
+							
+					case 010:
+						//slt-set less than. slt rd, rs1, rs2.
+						//rd is 1 if rs1<rs2
+						if(reg[rs1]<reg[rs2]){
+						reg[rd] = 1;
+						}
+						else{
+							reg[rd] = 0;
+						}
+						
+					case 011:
+						//sltu
+						//*****************
+						rs2 = getSigned(rs2);
+						if(reg[rs1]<reg[rs2]){
+						reg[rd] = 1;
+						}
+						else{
+							reg[rd] = 0;
+						}
+						
+					case 100:
+						//xor
+						reg[rd]=reg[rs1]^reg[rs2];
+						break;	
+					case 101://**************
+						//srl and  sra
+						if(funct7 == 0000000){
+						//srl
+						reg[rd]=reg[rs1]>>>reg[rs2];
+						}
+						//sra
+						if(funct7 == 0100000){
+						//srl
+						reg[rd]=reg[rs1]>>reg[rs2];
+						}
+						
+					case 110:
+						//or
+						reg[rd]=reg[rs1]|reg[rs2];
+						
+					case 111:
+						//and
+						reg[rd]=reg[rs1]&reg[rs2];
+						
+				
+			}
+			
 			case 0x37://lui	
 				reg[rd] = imml;	
 				
@@ -168,60 +283,7 @@ public class IsaSim {
 			}
 			
 			if(opcode==0x23){
-				switch(funct3){
-				 	case 000:
-						//addi
-						reg[rd]=reg[rs1]+imm;
-						break;
-					case 001://***************
-						//slli-shifr left logical immediate
-						imm = getSigned(imm);
-						reg[rd]=reg[rs1] << imm;
-						break;	
-					case 010:
-						//slti-set less than immediate
-						if(reg[rs1]>imm){
-						reg[rd] = 1;
-						}
-						else{
-							reg[rd] = 0;
-						}
-						break;
-					case 011:
-						//sltiu-set less than immediate unsigned
-						//*****************
-						imm = getSigned(imm);
-						if(reg[rs1]>imm){
-						reg[rd] = 1;
-						}
-						else{
-							reg[rd] = 0;
-						}
-						break;	
-					case 100:
-						//xori
-						reg[rd]=reg[rs1]^imm;
-						break;	
-					case 101://******************
-						//srli and sral- shift right logical and arithmetic immediate
-						
-						if(funct7==0000000){
-						imm = getSigned(imm);	
-						reg[rd]=reg[rs1]<<(32-imm);
-						}
-						if(funct7==0100000){
-						reg[rd]=reg[rs1]>>imm;
-						}
-						break;
-					case 110:
-						//ori
-						reg[rd]=reg[rs1]|imm;
-						break;	
-					case 111:
-						//andi
-						reg[rd]=reg[rs1]&imm;
-						break;		
-				}
+				
 				
 					
 			}
@@ -240,72 +302,8 @@ public class IsaSim {
 				}
 			}
 			
-			if(opcode== 0x63){
-				switch(funct3){
-					case 000://***************
-						//add and sub
-						if(funct7==0000000){
-							//add
-							reg[rd]=reg[rs1]+reg[rs2];
-						}
-						if(funct7==0100000){
-						//sub
-							reg[rd]=reg[rs1]-reg[rs2];
-						}
-						break;
-					case 001:
-						//sll
-						rs2 = getSigned(rs2);
-						reg[rd]=reg[rs1]<< (32-reg[rs2]); // FIX 
-						break;	
-					case 010:
-						//slt-set less than. slt rd, rs1, rs2.
-						//rd is 1 if rs1<rs2
-						if(reg[rs1]<reg[rs2]){
-						reg[rd] = 1;
-						}
-						else{
-							reg[rd] = 0;
-						}
-						break;
-					case 011:
-						//sltu
-						//*****************
-						rs2 = getSigned(rs2);
-						if(reg[rs1]<reg[rs2]){
-						reg[rd] = 1;
-						}
-						else{
-							reg[rd] = 0;
-						}
-						break;	
-					case 100:
-						//xor
-						reg[rd]=reg[rs1]^reg[rs2];
-						break;	
-					case 101://**************
-						//srl and  sra
-						if(funct7 == 0000000){
-						//srl
-						reg[rd]=reg[rs1]>>>reg[rs2];
-						}
-						//sra
-						if(funct7 == 0100000){
-						//srl
-						reg[rd]=reg[rs1]>>reg[rs2];
-						}
-						break;
-					case 110:
-						//or
-						reg[rd]=reg[rs1]|reg[rs2];
-						break;	
-					case 111:
-						//and
-						reg[rd]=reg[rs1]&reg[rs2];
-						break;	
-				}
-			}
-			
+			if(opcode== 0x33){
+				
 			// printing registers
 			
 			System.out.print("Registers: ");
