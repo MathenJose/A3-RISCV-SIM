@@ -198,24 +198,9 @@ public class IsaSim {
 					case 111:
 						//andi
 						reg[rd]=reg[rs1]&imm;
-				}
-			
-			if(opcode==0x43){
-				switch(funct3){
-				 	case 000:
-						//SB
-						break;
-					case 001://***************
-						//SH	
-						break;	
-					case 010:
-						//SW
-						break;
-				}
-			}
-			
-			if(opcode== 0x33){
-				switch(funct3){
+							}
+			case 0x33:
+					switch(funct3){
 					case 000://***************
 						//add and sub
 						if(funct7==0000000){
@@ -278,29 +263,32 @@ public class IsaSim {
 						reg[rd]=reg[rs1]&reg[rs2];
 						
 				
-			}
+							}
+			case 0x43:
+				switch(funct3){
+				 	case 000:
+						//SB
+						break;
+					case 001://***************
+						//SH	
+						break;	
+					case 010:
+						//SW
+						break;
+				}
+			
+			
+			
 			
 			case 0x37://lui	
 				reg[rd] = imml;	
+			}
 				
 			default:
 				System.out.println("Opcode " + opcode + " not yet implemented");
 				break;
-			}
+		}
 			
-			
-			if(opcode==0x13){
-				switch(funct3){
-						
-					//sehwa	
-				}
-			}
-			
-			if(opcode==0x23){
-				
-				
-					
-			}
 			
 			if(opcode==0x43){
 				switch(funct3){
