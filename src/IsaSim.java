@@ -28,14 +28,14 @@ public class IsaSim {
 	
 	static int progr[] = new int[250];
 
-	public static void main(String[] args) {
+	public static int main(String[] args) {
 
 		System.out.println("Hello RISC-V World!");
 
 		pc = 0;
 		
 		 // The name of the file to open.
-        String fileName = "C:\\Users\\mjos0003\\Desktop\\02155 compArch\\ass3\\src\\addneg.bin";
+        String fileName = "C:\\Users\\mjos0003\\Desktop\\02155 compArch\\ass3\\src\\addpos.bin";
 
         try {
             // Use this for reading the data.
@@ -115,15 +115,14 @@ public class IsaSim {
         pc = 0; // resetting pc to zero for simulating (used for loading progr array before)
 		
 		//conversion of signed to unsigned
-		public static long getSigned(int x){
+		long getSigned(int x){
 		if(x>0){
 			return x;
-			}
-			else{
-				x=~x;
-				return x=x+1;
-		
-				}
+		}
+		else{
+			x=~x;
+			return x=x+1;
+		}
 		}
 
 		for (;;) {
@@ -156,7 +155,6 @@ public class IsaSim {
 			}
 			
 			
-			//when opcode=0x13
 			if(opcode==0x13){
 				switch(funct3){
 						
@@ -164,7 +162,6 @@ public class IsaSim {
 				}
 			}
 			
-			//when opcode=0x23
 			if(opcode==0x23){
 				switch(funct3){
 				 	case 000:
@@ -217,7 +214,6 @@ public class IsaSim {
 				
 					
 			}
-			//opcode is 0x43
 			
 			if(opcode==0x43){
 				switch(funct3){
@@ -232,7 +228,6 @@ public class IsaSim {
 						break;
 				}
 			}
-			//when opcode=0x63
 			
 			if(opcode== 0x63){
 				switch(funct3){
@@ -296,6 +291,10 @@ public class IsaSim {
 			if (pc >= progr.length) {
 				break;
 			}
+			
+			// printing registers
+			
+			System.out.print("Registers: ");
 			for (int i = 0; i < reg.length; ++i) {
 				System.out.print(reg[i] + " ");
 			}
