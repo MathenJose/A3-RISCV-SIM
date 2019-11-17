@@ -142,16 +142,16 @@ public class IsaSim {
 
 			switch (opcode) {
 
-			case 0x13: //
+			case 0x13: //load and store
 				reg[rd] = reg[rs1] + imm;
 				break;
-			case 0x23: //
+			case 0x23: //instr with immediates
 				reg[rd] = reg[rs1] + imm;
 				break;
-			case 0x63:
+			case 0x63://arithmetic operations
 				reg[rd] = reg[rs1]+reg[rs2];
 				break;
-			case 0x37:	
+			case 0x37://lui	
 				reg[rd] = imml;	
 				
 			default:
