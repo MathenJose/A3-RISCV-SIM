@@ -144,18 +144,18 @@ public class IsaSim {
 
 			case 0x13: //load and store
 				reg[rd] = reg[rs1] + imml;
-				
+				break;
 			case 0x23: //instr with immediates
 				switch(funct3){
 				 	case 000:
 						//addi
 						reg[rd]=reg[rs1]+imm;
-						
+						break;
 					case 001://***************
 						//slli-shifr left logical immediate
 						rs2 = getSigned(rs2);
 						reg[rd]=reg[rs1] << rs2;
-							
+						break;	
 					case 010:
 						//slti-set less than immediate
 						if(reg[rs1]<imm){
@@ -164,7 +164,7 @@ public class IsaSim {
 						else{
 							reg[rd] = 0;
 						}
-						
+						break;
 					case 011:
 						//sltiu-set less than immediate unsigned
 						//*****************
@@ -190,7 +190,7 @@ public class IsaSim {
 						if(funct7==0100000){
 						reg[rd]=reg[rs1]>>rs2;
 						}
-						
+						break;
 					case 110:
 						//ori
 						reg[rd]=reg[rs1]|imm;
@@ -199,6 +199,7 @@ public class IsaSim {
 						//andi
 						reg[rd]=reg[rs1]&imm;
 							}
+					break;
 			case 0x33:
 					switch(funct3){
 					case 000://***************
@@ -211,12 +212,12 @@ public class IsaSim {
 						//sub
 							reg[rd]=reg[rs1]-reg[rs2];
 						}
-						
+						break;
 					case 001:
 						//sll
 						
 						reg[rd]=reg[rs1]<<reg[rs2]; // FIX 
-							
+						break;	
 					case 010:
 						//slt-set less than. slt rd, rs1, rs2.
 						//rd is 1 if rs1<rs2
@@ -226,7 +227,7 @@ public class IsaSim {
 						else{
 							reg[rd] = 0;
 						}
-						
+						break;
 					case 011:
 						//sltu
 						//*****************
@@ -237,7 +238,7 @@ public class IsaSim {
 						else{
 							reg[rd] = 0;
 						}
-						
+						break;
 					case 100:
 						//xor
 						reg[rd]=reg[rs1]^reg[rs2];
@@ -254,15 +255,15 @@ public class IsaSim {
 						
 						reg[rd]=reg[rs1]>>reg[rs2];
 						}
-						
+						break;
 					case 110:
 						//or
 						reg[rd]=reg[rs1]|reg[rs2];
-						
+						break;
 					case 111:
 						//and
 						reg[rd]=reg[rs1]&reg[rs2];
-						
+						break;
 				
 							}
 			case 0x43:
