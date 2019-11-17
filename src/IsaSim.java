@@ -16,16 +16,6 @@ public class IsaSim {
 
 	static int pc;
 	static int reg[] = new int[32]; // 32 registers
-
-	// Here the first program hard coded as an array
-	/* from template
-	static int progr[] = {
-			// As minimal RISC-V assembler example
-			0x00200093, // addi x1 x0 2
-			0x00300113, // addi x2 x0 3
-			0x002081b3, // add x3 x1 x2
-	};
-	*/
 	
 	static int progr[];
 	
@@ -47,7 +37,7 @@ public class IsaSim {
 		pc = 0;
 		
 		 // The name of the file to open.
-        String fileName = "C:\\Users\\mjos0003\\Desktop\\02155 compArch\\ass3\\src\\addlarge.bin";
+        String fileName = "C:\\Users\\mjos0003\\Desktop\\02155 compArch\\ass3\\src\\addpos.bin";
 
         try {
             // Use this for reading the data.
@@ -71,6 +61,12 @@ public class IsaSim {
             
             progr = new int[total/4];
             System.out.println("Read " + total + " bytes");
+            
+            System.out.println("printing BUFFER");
+            for(int i =0; i<buffer.length; i++) {
+            	System.out.println(Integer.toBinaryString(buffer[i]));
+            }
+            System.out.println("printing BUFFER");
 
             int i = 0;
             String instruction = "";
@@ -86,7 +82,10 @@ public class IsaSim {
 	            // prints the words in binary
 	            instruction = s2 + instruction;
 	            if (i%4 == 3) {
+	            	System.out.println();
+	            	System.out.print("+");
 	            	System.out.println(instruction);
+	            	
 	            	instruction = "";
 	            	instructionInt = 0;
 	            }
@@ -104,7 +103,18 @@ public class IsaSim {
 	            else if(i%4 == 3) {
 	            	word[0] = buffer[i];
 	            	instructionInt = (word[0] << 24) | (word[1] << 16) | (word[2] << 8) | (word[3] << 0);
-	            	//System.out.println(Integer.toHexString(instructionInt)); // prints the word in int (2's complement 32 bits)
+	            	System.out.print("%");
+	            	//System.out.print(" 0: ");
+	            	System.out.print(Integer.toBinaryString(word[0]));
+	            	//System.out.print(" 1: ");
+	            	System.out.print(Integer.toBinaryString(word[1]));
+	            	//System.out.print(" 2: ");
+	            	System.out.print(Integer.toBinaryString(word[2]));
+	            	//System.out.print(" 3: ");
+	            	System.out.println(Integer.toBinaryString(word[3]));
+	            	
+	            	System.out.print("-");
+	            	System.out.println(Integer.toBinaryString(instructionInt)); // prints the word in int (2's complement 32 bits)
 	            	progr[pc] = instructionInt;
 	            	pc ++;
 	            }
@@ -120,9 +130,7 @@ public class IsaSim {
         catch(IOException ex) {
             System.out.println(
                 "Error reading file '" 
-                + fileName + "'");                  
-            // Or we could just do this: 
-            // ex.printStackTrace();
+                + fileName + "'");
         }
         
         pc = 0; // resetting pc to zero for simulating (used for loading progr array before)
@@ -133,27 +141,38 @@ public class IsaSim {
 			int opcode = instr & 0x7f;//leaves first 7 digits
 			int rd = (instr >> 7) & 0x01f;// 7bit shift to right and clears everything except for first 5 digits
 			int rs1 = (instr >> 15) & 0x01f;
-			int rs2 = (instr >> 20) & 0x05f;
-			int funct3 = (instr>> 13) & 0x03f;
-			int funct7 = (instr>> 23) & 0x07f;
-			int imm5 = (instr>> 23) & 0x07f;
-			int imm = (instr >> 20);
-			int imml =(instr >> 12);
+			int rs2 = (instr >> 20) & 0x01f;
+			int funct3 = (instr>> 12) & 0x7;
+			int funct7 = (instr>> 23);
+			int imm_25_31 = (instr>> 25);
+			int imm_20_31 = (instr >> 20);
+			int imm_12_31 =(instr >> 12);
+			
+			System.out.print("Opcode: ");
+			System.out.println(Integer.toHexString(opcode));
+			if(opcode == 0x13) {
+				System.out.print("funct3: ");
+				System.out.println(Integer.toBinaryString(funct3));
+			}
 
 			switch (opcode) {
 			
-			case 0x73:
+			case 0x73: // e-call
 				funct3=000;
 				break;	
 				
-			case 0x13: //load and store
-				reg[rd] = reg[rs1] + imml;
+			case 0x23: //load and store 0100011
+				reg[rd] = reg[rs1] + imm_12_31;
 				break;
-			case 0x23: //instr with immediates
+				
+			case 0x13: //instructions with immediate 0010011
 				switch(funct3){
 				 	case 000:
 						//addi
-						reg[rd]=reg[rs1]+imm;
+				 		System.out.println("addi");
+				 		System.out.println(rd);
+				 		System.out.println(rs1);
+						reg[rd]=reg[rs1]+imm_20_31;
 						break;
 					case 001://***************
 						//slli-shifr left logical immediate
@@ -162,7 +181,7 @@ public class IsaSim {
 						break;	
 					case 010:
 						//slti-set less than immediate
-						if(reg[rs1]<imm){
+						if(reg[rs1]<imm_20_31){
 						reg[rd] = 1;
 						}
 						else{
@@ -172,8 +191,8 @@ public class IsaSim {
 					case 011:
 						//sltiu-set less than immediate unsigned
 						//*****************
-						imm = getSigned(imm);
-						if(reg[rs1]>imm){
+						imm_20_31 = getSigned(imm_20_31);
+						if(reg[rs1]>imm_20_31){
 						reg[rd] = 1;
 						}
 						else{
@@ -182,7 +201,7 @@ public class IsaSim {
 						break;	
 					case 100:
 						//xori
-						reg[rd]=reg[rs1]^imm;
+						reg[rd]=reg[rs1]^imm_20_31;
 						
 					case 101://******************
 						//srli and srai- shift right logical and arithmetic immediate
@@ -197,17 +216,18 @@ public class IsaSim {
 						break;
 					case 110:
 						//ori
-						reg[rd]=reg[rs1]|imm;
+						reg[rd]=reg[rs1]|imm_20_31;
 							
 					case 111:
 						//andi
-						reg[rd]=reg[rs1]&imm;
-							}
-					break;
-			case 0x33:
-					switch(funct3){
-					case 000://***************
-						//add and sub
+						reg[rd]=reg[rs1]&imm_20_31;
+				}
+				break;
+				
+			case 0x33: // 0110011
+				switch(funct3){
+					case 000://
+						//add
 						if(funct7==0000000){
 							//add
 							reg[rd]=reg[rs1]+reg[rs2];
@@ -271,9 +291,10 @@ public class IsaSim {
 						//and
 						reg[rd]=reg[rs1]&reg[rs2];
 						break;
+				}
+				break;
 				
-							}
-			case 0x43:
+			case 0x43: // 1000011
 				switch(funct3){
 				 	case 000:
 						//SB
@@ -285,12 +306,13 @@ public class IsaSim {
 						//SW
 						break;
 				}
+				break;
 			
 			
-			
-			
-			case 0x37://lui	
-				reg[rd] = imml;	
+			case 0x37://lui	110111
+				System.out.println("lui inst");
+				reg[rd] = imm_12_31;	
+				break;
 				
 			default:
 				System.out.println("Opcode " + opcode + " not yet implemented");
@@ -326,10 +348,9 @@ public class IsaSim {
 				break;
 			}
 		
-
-		System.out.println("Program exit");
-
 		}
+		System.out.println("Program exit");
 
 	}
 }
+
