@@ -172,6 +172,11 @@ public class IsaSim {
 						break;
 					case 011:
 						//sltiu-set less than immediate unsigned
+						//*****************
+						if(reg[rs1]>imm){
+						reg[rd]==1;
+						}
+						else{reg[rd]==0;}
 						break;	
 					case 100:
 						//xori
@@ -244,6 +249,7 @@ public class IsaSim {
 						break;
 					case 011:
 						//sltu
+						//*****************
 						break;	
 					case 100:
 						//xor
