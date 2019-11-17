@@ -160,24 +160,32 @@ public class IsaSim {
 						reg[rd]=reg[rs1]+imm;
 						break;
 					case 001://***************
-						//slli
+						//slli-shifr left logical immediate
+						reg[rd]=reg[rs1]<<<imm;
 						break;	
 					case 010:
-						//slti
+						//slti-set less than immediate
 						if(reg[rs1]>imm){
 						reg[rd]==1;
 						}
 						else{reg[rd]==0;}
 						break;
 					case 011:
-						//sltiu
+						//sltiu-set less than immediate unsigned
 						break;	
 					case 100:
 						//xori
 						reg[rd]=reg[rs1]^imm;
 						break;	
 					case 101://******************
-						//srli and sral
+						//srli and sral- shift right logical and arithmetic immediate
+						
+						if(funct7==0000000){
+						reg[rd]=reg[rs1]>>>imm;
+						}
+						if(funct7==0100000){
+						reg[rd]=reg[rs1]>>imm;
+						}
 						break;
 					case 110:
 						//ori
