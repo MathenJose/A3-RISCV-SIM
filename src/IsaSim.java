@@ -170,22 +170,26 @@ public class IsaSim {
 						break;
 					case 001://***************
 						//slli-shifr left logical immediate
-						reg[rd]=reg[rs1]<<<imm;
+						reg[rd]=reg[rs1] <<< imm;
 						break;	
 					case 010:
 						//slti-set less than immediate
 						if(reg[rs1]>imm){
-						reg[rd]==1;
+						reg[rd] = 1;
 						}
-						else{reg[rd]==0;}
+						else{
+							reg[rd] = 0;
+						}
 						break;
 					case 011:
 						//sltiu-set less than immediate unsigned
 						//*****************
 						if(reg[rs1]>imm){
-						reg[rd]==1;
+						reg[rd] = 1;
 						}
-						else{reg[rd]==0;}
+						else{
+							reg[rd] = 0;
+						}
 						break;	
 					case 100:
 						//xori
@@ -250,9 +254,11 @@ public class IsaSim {
 						//slt-set less than. slt rd, rs1, rs2.
 						//rd is 1 if rs1<rs2
 						if(reg[rs1]<reg[rs2]){
-						reg[rd]==1;
+						reg[rd] = 1;
 						}
-						else{reg[rd]==0;}
+						else{
+							reg[rd] = 0;
+						}
 						break;
 					case 011:
 						//sltu
@@ -264,12 +270,12 @@ public class IsaSim {
 						break;	
 					case 101://**************
 						//srl and  sra
-						if(funct7=0000000){
+						if(funct7 == 0000000){
 						//srl
 						reg[rd]=reg[rs1]>>>reg[rs2];
 						}
 						//sra
-						if(funct7=0100000){
+						if(funct7 == 0100000){
 						//srl
 						reg[rd]=reg[rs1]>>reg[rs2];
 						}
