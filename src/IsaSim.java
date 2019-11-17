@@ -206,9 +206,11 @@ public class IsaSim {
 						//add and sub
 						if(funct7==0000000){
 							//add
+							reg[rd]=reg[rs1]+reg[rs2];
 						}
 						else{
 						//sub
+							reg[rd]=reg[rs1]-reg[rs2];
 						}
 						break;
 					case 001:
@@ -222,6 +224,7 @@ public class IsaSim {
 						break;	
 					case 100:
 						//xor
+						reg[rd]=reg[rs1]^reg[rs2];
 						break;	
 					case 101://**************
 						//srl and  sra
@@ -234,9 +237,11 @@ public class IsaSim {
 						break;
 					case 110:
 						//or
+						reg[rd]=reg[rs1]|reg[rs2];
 						break;	
 					case 111:
 						//and
+						reg[rd]=reg[rs1]&reg[rs2];
 						break;	
 				}
 			}
