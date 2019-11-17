@@ -282,7 +282,6 @@ public class IsaSim {
 			
 			case 0x37://lui	
 				reg[rd] = imml;	
-			}
 				
 			default:
 				System.out.println("Opcode " + opcode + " not yet implemented");
@@ -290,7 +289,7 @@ public class IsaSim {
 		}
 			
 			
-			if(opcode==0x43){
+			if(opcode==0x43){ // TO DO
 				switch(funct3){
 				 	case 000:
 						//SB
@@ -304,7 +303,6 @@ public class IsaSim {
 				}
 			}
 			
-			if(opcode== 0x33){
 				
 			// printing registers
 			
@@ -318,10 +316,11 @@ public class IsaSim {
 			if (pc >= progr.length) {
 				break;
 			}
-		}
+		
 
 		System.out.println("Program exit");
 
-	}
+		}
 
+	}
 }
