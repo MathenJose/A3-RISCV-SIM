@@ -14,15 +14,19 @@ import java.io.IOException;
 public class IsaSim {
 
 	static int pc;
-	static int reg[] = new int[4];
+	static int reg[] = new int[32]; // 32 registers
 
 	// Here the first program hard coded as an array
+	/* from template
 	static int progr[] = {
 			// As minimal RISC-V assembler example
 			0x00200093, // addi x1 x0 2
 			0x00300113, // addi x2 x0 3
 			0x002081b3, // add x3 x1 x2
 	};
+	*/
+	
+	static int progr[] = new int[250];
 
 	public static void main(String[] args) {
 
@@ -87,7 +91,9 @@ public class IsaSim {
 	            else if(i%4 == 3) {
 	            	word[0] = buffer[i];
 	            	instructionInt = (word[0] << 24) | (word[1] << 16) | (word[2] << 8) | (word[3] << 0);
-	            	//System.out.println(instructionInt); // prints the word in int (2's complement 32 bits)
+	            	//System.out.println(Integer.toHexString(instructionInt)); // prints the word in int (2's complement 32 bits)
+	            	progr[pc] = instructionInt;
+	            	pc ++;
 	            }
 	            
 	            i++;
@@ -105,6 +111,8 @@ public class IsaSim {
             // Or we could just do this: 
             // ex.printStackTrace();
         }
+        
+        pc = 0; // resetting pc to zero for simulating (used for loading progr array before)
 
 		for (;;) {
 
