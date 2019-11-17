@@ -143,7 +143,7 @@ public class IsaSim {
 			switch (opcode) {
 
 			case 0x13: //load and store
-				reg[rd] = reg[rs1] + imm;
+				reg[rd] = reg[rs1] + imml;
 				
 			case 0x23: //instr with immediates
 				switch(funct3){
