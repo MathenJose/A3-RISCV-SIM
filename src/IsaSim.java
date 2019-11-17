@@ -214,7 +214,7 @@ public class IsaSim {
 				}
 			}
 			
-			if(opcode== 0x63){
+			if(opcode== 0x33){
 				switch(funct3){
 					case 000://***************
 						//add and sub
