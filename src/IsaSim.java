@@ -31,7 +31,7 @@ public class IsaSim {
 		pc = 0;
 		
 		 // The name of the file to open.
-        String fileName = "shift.bin";
+        String fileName = "C:\\Users\\mjos0003\\Desktop\\02155 compArch\\ass3\\src\\addneg.bin";
 
         try {
             // Use this for reading the data.
@@ -59,27 +59,36 @@ public class IsaSim {
             String instruction = "";
             int instructionInt;
             
+            byte[] word = new byte[4];
+            
             while(i < total) {
 	            
 	            String s2 = String.format("%8s", Integer.toBinaryString(buffer[i] & 0xFF)).replace(' ', '0');
-	            //System.out.println(s2);
+	            //System.out.println(s2); // prints each byte
 	            
+	            // prints the words in binary
 	            instruction = s2 + instruction;
 	            if (i%4 == 3) {
 	            	System.out.println(instruction);
-	            	instructionInt = Integer.parseInt(instruction,2);
-	            	System.out.println(instructionInt);
 	            	instruction = "";
+	            	instructionInt = 0;
 	            }
 	            
-	            /*
-	            if (i%4 == 3) {
-	            	System.out.println(s2);
+	            // this separates the bytes and then puts them together into a word
+	            if(i%4 == 0) {
+	            	word[3] = buffer[i];
 	            }
-	            else {
-	            	System.out.print(s2 + "_");
+	            else if(i%4 == 1) {
+	            	word[2] = buffer[i];
 	            }
-	            */
+	            else if(i%4 == 2) {
+	            	word[1] = buffer[i];
+	            }
+	            else if(i%4 == 3) {
+	            	word[0] = buffer[i];
+	            	instructionInt = (word[0] << 24) | (word[1] << 16) | (word[2] << 8) | (word[3] << 0);
+	            	//System.out.println(instructionInt); // prints the word in int (2's complement 32 bits)
+	            }
 	            
 	            i++;
             }
