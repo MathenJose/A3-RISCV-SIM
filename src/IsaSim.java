@@ -171,6 +171,7 @@ public class IsaSim {
 						break;
 					case 001://***************
 						//slli-shifr left logical immediate
+						imm = getSigned(imm);
 						reg[rd]=reg[rs1] << imm;
 						break;	
 					case 010:
@@ -201,7 +202,8 @@ public class IsaSim {
 						//srli and sral- shift right logical and arithmetic immediate
 						
 						if(funct7==0000000){
-						reg[rd]=reg[rs1]>>>imm;
+						imm = getSigned(imm);	
+						reg[rd]=reg[rs1]<<(32-imm);
 						}
 						if(funct7==0100000){
 						reg[rd]=reg[rs1]>>imm;
@@ -249,7 +251,8 @@ public class IsaSim {
 						break;
 					case 001:
 						//sll
-						reg[rd]=reg[rs1]<< reg[rs2]; // FIX 
+						rs2 = getSigned(rs2);
+						reg[rd]=reg[rs1]<< (32-reg[rs2]); // FIX 
 						break;	
 					case 010:
 						//slt-set less than. slt rd, rs1, rs2.
@@ -264,6 +267,13 @@ public class IsaSim {
 					case 011:
 						//sltu
 						//*****************
+						rs2 = getSigned(rs2);
+						if(reg[rs1]<reg[rs2]){
+						reg[rd] = 1;
+						}
+						else{
+							reg[rd] = 0;
+						}
 						break;	
 					case 100:
 						//xor
