@@ -28,8 +28,19 @@ public class IsaSim {
 	*/
 	
 	static int progr[] = new int[250];
+	
+	//conversion of signed to unsigned
+	static int getSigned(int x){
+		if(x>0){
+			return x;
+		}
+		else{
+			x=~x;
+			return x=x+1;
+		}
+	}
 
-	public static int main(String[] args) {
+	public static void main(String[] args) {
 
 		System.out.println("Hello RISC-V World!");
 
@@ -114,17 +125,6 @@ public class IsaSim {
         }
         
         pc = 0; // resetting pc to zero for simulating (used for loading progr array before)
-		
-		//conversion of signed to unsigned
-		long getSigned(int x){
-		if(x>0){
-			return x;
-		}
-		else{
-			x=~x;
-			return x=x+1;
-		}
-		}
 
 		for (;;) {
 
@@ -185,7 +185,7 @@ public class IsaSim {
 					case 011:
 						//sltiu-set less than immediate unsigned
 						//*****************
-						getSigned(int imm);
+						imm = getSigned(imm);
 						if(reg[rs1]>imm){
 						reg[rd] = 1;
 						}
@@ -210,7 +210,6 @@ public class IsaSim {
 					case 110:
 						//ori
 						reg[rd]=reg[rs1]|imm;
-						break;	
 						break;	
 					case 111:
 						//andi
@@ -250,7 +249,7 @@ public class IsaSim {
 						break;
 					case 001:
 						//sll
-						reg[rd]=reg[rs1]<<<reg[rs2];
+						reg[rd]=reg[rs1]<< reg[rs2]; // FIX 
 						break;	
 					case 010:
 						//slt-set less than. slt rd, rs1, rs2.
