@@ -47,7 +47,7 @@ public class IsaSim {
 		pc = 0;
 		
 		 // The name of the file to open.
-        String fileName = "C:\\Users\\mjos0003\\Desktop\\02155 compArch\\ass3\\src\\addpos.bin";
+        String fileName = "C:\\Users\\mjos0003\\Desktop\\02155 compArch\\ass3\\src\\addlarge.bin";
 
         try {
             // Use this for reading the data.
@@ -200,8 +200,22 @@ public class IsaSim {
 						reg[rd]=reg[rs1]&imm;
 				}
 			
-			case 0x33://arithmetic operations
-					switch(funct3){
+			if(opcode==0x43){
+				switch(funct3){
+				 	case 000:
+						//SB
+						break;
+					case 001://***************
+						//SH	
+						break;	
+					case 010:
+						//SW
+						break;
+				}
+			}
+			
+			if(opcode== 0x63){
+				switch(funct3){
 					case 000://***************
 						//add and sub
 						if(funct7==0000000){
