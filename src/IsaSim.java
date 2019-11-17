@@ -27,7 +27,7 @@ public class IsaSim {
 	};
 	*/
 	
-	static int progr[] = new int[250];
+	static int progr[];
 	
 	//conversion of signed to unsigned
 	static int getSigned(int x){
@@ -69,6 +69,7 @@ public class IsaSim {
             // Always close files.
             inputStream.close();        
             
+            progr = new int[total/4];
             System.out.println("Read " + total + " bytes");
 
             int i = 0;
@@ -302,13 +303,6 @@ public class IsaSim {
 				}
 			}
 			
-			
-
-			++pc; // We count in 4 byte words
-			if (pc >= progr.length) {
-				break;
-			}
-			
 			// printing registers
 			
 			System.out.print("Registers: ");
@@ -316,6 +310,11 @@ public class IsaSim {
 				System.out.print(reg[i] + " ");
 			}
 			System.out.println();
+			
+			++pc; // We count in 4 byte words
+			if (pc >= progr.length) {
+				break;
+			}
 		}
 
 		System.out.println("Program exit");
