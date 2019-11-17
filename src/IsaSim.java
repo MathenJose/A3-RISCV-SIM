@@ -138,6 +138,7 @@ public class IsaSim {
 			int funct7 = (instr>> 23) & 0x07f;
 			int imm5 = (instr>> 23) & 0x07f;
 			int imm = (instr >> 20);
+			int imml =(instr >> 12);
 
 			switch (opcode) {
 
@@ -150,6 +151,8 @@ public class IsaSim {
 			case 0x63:
 				reg[rd] = reg[rs1]+reg[rs2];
 				break;
+			case 0x37:	
+				reg[rd] = imml;	
 				
 			default:
 				System.out.println("Opcode " + opcode + " not yet implemented");
@@ -245,7 +248,7 @@ public class IsaSim {
 							//add
 							reg[rd]=reg[rs1]+reg[rs2];
 						}
-						else{
+						if(funct7==0100000){
 						//sub
 							reg[rd]=reg[rs1]-reg[rs2];
 						}
