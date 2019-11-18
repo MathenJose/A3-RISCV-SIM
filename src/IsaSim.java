@@ -37,7 +37,7 @@ public class IsaSim {
 		pc = 0;
 		
 		 // The name of the file to open.
-        String fileName = "C:\\Users\\mjos0003\\Desktop\\02155 compArch\\ass3\\src\\addpos.bin";
+        String fileName = "C:\\Users\\mjos0003\\Desktop\\02155 compArch\\ass3\\src\\addneg.bin";
 
         try {
             // Use this for reading the data.
@@ -53,7 +53,7 @@ public class IsaSim {
             int total = 0;
             int nRead = 0;
             while((nRead = inputStream.read(buffer)) != -1) {
-                total += nRead;
+                total += nRead; // number of bytes read
             }   
 
             // Always close files.
@@ -61,12 +61,6 @@ public class IsaSim {
             
             progr = new int[total/4];
             System.out.println("Read " + total + " bytes");
-            
-            System.out.println("printing BUFFER");
-            for(int i =0; i<buffer.length; i++) {
-            	System.out.println(Integer.toBinaryString(buffer[i]));
-            }
-            System.out.println("printing BUFFER");
 
             int i = 0;
             String instruction = "";
@@ -78,6 +72,8 @@ public class IsaSim {
 	            
 	            String s2 = String.format("%8s", Integer.toBinaryString(buffer[i] & 0xFF)).replace(' ', '0');
 	            //System.out.println(s2); // prints each byte
+	            
+	            
 	            
 	            // prints the words in binary
 	            instruction = s2 + instruction;
@@ -92,17 +88,19 @@ public class IsaSim {
 	            
 	            // this separates the bytes and then puts them together into a word
 	            if(i%4 == 0) {
-	            	word[3] = buffer[i];
+	            	word[3] = (byte) (buffer[i] & 0xFF);
 	            }
 	            else if(i%4 == 1) {
-	            	word[2] = buffer[i];
+	            	word[2] = (byte) (buffer[i] & 0xFF);
 	            }
 	            else if(i%4 == 2) {
-	            	word[1] = buffer[i];
+	            	word[1] = (byte) (buffer[i] & 0xFF);
 	            }
 	            else if(i%4 == 3) {
-	            	word[0] = buffer[i];
-	            	instructionInt = (word[0] << 24) | (word[1] << 16) | (word[2] << 8) | (word[3] << 0);
+	            	word[0] = (byte) (buffer[i] & 0xFF);
+	            	instructionInt = ((word[0] & 0xFF) << 24) | ((word[1] & 0xFF) << 16) | ((word[2] & 0xFF) << 8) | ((word[3] & 0xFF) << 0);
+	            	
+	            	/*
 	            	System.out.print("%");
 	            	//System.out.print(" 0: ");
 	            	System.out.print(Integer.toBinaryString(word[0]));
@@ -112,6 +110,7 @@ public class IsaSim {
 	            	System.out.print(Integer.toBinaryString(word[2]));
 	            	//System.out.print(" 3: ");
 	            	System.out.println(Integer.toBinaryString(word[3]));
+	            	*/
 	            	
 	            	System.out.print("-");
 	            	System.out.println(Integer.toBinaryString(instructionInt)); // prints the word in int (2's complement 32 bits)
@@ -150,10 +149,13 @@ public class IsaSim {
 			
 			System.out.print("Opcode: ");
 			System.out.println(Integer.toHexString(opcode));
-			if(opcode == 0x13) {
-				System.out.print("funct3: ");
-				System.out.println(Integer.toBinaryString(funct3));
-			}
+			
+			System.out.print("funct7: ");
+			System.out.println(Integer.toBinaryString(funct7));
+			
+			System.out.print("funct3: ");
+			System.out.println(Integer.toBinaryString(funct3));
+			
 
 			switch (opcode) {
 			
@@ -206,11 +208,11 @@ public class IsaSim {
 					case 101://******************
 						//srli and srai- shift right logical and arithmetic immediate
 						//SHAMPT as rs2
-						if(funct7==0000000){
+						if(funct7==0b0000000){
 					
 						reg[rd]=reg[rs1]<<rs2;
 						}
-						if(funct7==0100000){
+						if(funct7==0b0100000){
 						reg[rd]=reg[rs1]>>rs2;
 						}
 						break;
@@ -228,11 +230,12 @@ public class IsaSim {
 				switch(funct3){
 					case 000://
 						//add
-						if(funct7==0000000){
+						System.out.println("add");
+						if(funct7==0b0000000){
 							//add
 							reg[rd]=reg[rs1]+reg[rs2];
 						}
-						if(funct7==0100000){
+						if(funct7==0b0100000){
 						//sub
 							reg[rd]=reg[rs1]-reg[rs2];
 						}
@@ -273,12 +276,12 @@ public class IsaSim {
 						//srl and  sra
 						//rs2 = getSigned(rs2);
 							//used >>> and >> for shift to right for unsigned and signed
-						if(funct7 == 0000000){
+						if(funct7 == 0b0000000){
 						//srl
 						reg[rd]=reg[rs1]>>>reg[rs2];
 						}
 						//sra
-						if(funct7 == 0100000){
+						if(funct7 == 0b0100000){
 						
 						reg[rd]=reg[rs1]>>reg[rs2];
 						}
